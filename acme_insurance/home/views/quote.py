@@ -109,4 +109,7 @@ class Quote_View(API_CRUD):
             )
         id = request.GET.get("id")
         quote = Quote.objects.filter(id=id).first()
-        return JsonResponse(quote.rater_view(), safe=False)
+        if quote != None:
+            return JsonResponse(quote.rater_view(), safe=False)
+        else:
+            return JsonResponse({}, safe=False)
