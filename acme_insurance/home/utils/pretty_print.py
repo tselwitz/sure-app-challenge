@@ -1,8 +1,18 @@
+from uuid import UUID
+
+
 class PrettyPrint:
     def create_fields_dict(self):
-        return {field.name: getattr(self, field.name) for field in self._meta.fields}
+        fields_dict = {}
+        for field in self._meta.fields:
+            attr = getattr(self, field.name)
+            if isinstance(attr, (bool, str, int, float, UUID)):
+                fields_dict[field.name] = attr
+            else:
+                fields_dict[field.name] = attr.pretty_print()
+        return fields_dict
 
-    def get_dict(self) -> dict:
+    def pretty_print(self) -> dict:
         return self.create_fields_dict()
 
     def __str__(self) -> str:

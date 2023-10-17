@@ -9,6 +9,9 @@ class Additional_Costs(PrettyPrint, models.Model):
     description = models.CharField(max_length=100)
     price = models.FloatField(default=0.0)
 
+    def __hash__(self):
+        return hash(self.id)
+
     def __eq__(self, __value: object) -> bool:
         if self.id == __value.id:
             return True

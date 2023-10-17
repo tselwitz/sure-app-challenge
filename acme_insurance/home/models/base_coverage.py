@@ -9,6 +9,9 @@ class Base_Coverage(PrettyPrint, models.Model):
     base_coverage_type = models.CharField(max_length=100)
     price = models.FloatField()
 
+    def __hash__(self):
+        return hash(self.id)
+
     def __eq__(self, __value: object) -> bool:
         if self.id == __value.id:
             return True

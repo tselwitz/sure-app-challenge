@@ -10,3 +10,10 @@ class State(PrettyPrint, models.Model):
 
     tax_multiplier = models.FloatField(default=1.0)
     flood_multiplier = models.FloatField(default=1.0)
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, __value: object) -> bool:
+        if self.id == __value.id or self.state == __value.state:
+            return True
