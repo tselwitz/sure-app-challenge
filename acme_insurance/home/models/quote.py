@@ -7,7 +7,7 @@ from home.utils.pretty_print import PrettyPrint
 
 
 class Quote(PrettyPrint, models.Model):
-    id = models.UUIDField(default=uuid4, primary_key=True)
+    id = models.UUIDField(default=uuid4(), primary_key=True)
 
     name = models.CharField(max_length=100)
     has_pet = models.BooleanField(default=False)
@@ -26,6 +26,3 @@ class Quote(PrettyPrint, models.Model):
     subtotal = models.FloatField()
     taxes = models.FloatField()
     total_price = models.FloatField()
-
-    def save(self, *args, **kwargs):
-        super(Quote, self).save(*args, **kwargs)
