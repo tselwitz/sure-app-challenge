@@ -13,9 +13,7 @@ class QuoteViewTest(TestCase):
         Base_Coverage.objects.create(base_coverage_type="Basic", price=20.0)
         Base_Coverage.objects.create(base_coverage_type="Premium", price=40.0)
         Additional_Costs.objects.create(description="Pet Fee", price=20.0)
-        texas = State.objects.create(
-            state="Texas", tax_multiplier=0.005, flood_multiplier=1.5
-        )
+        State.objects.create(state="Texas", tax_multiplier=0.005, flood_multiplier=1.5)
         State.objects.create(
             state="California", tax_multiplier=0.01, flood_multiplier=1.02
         )

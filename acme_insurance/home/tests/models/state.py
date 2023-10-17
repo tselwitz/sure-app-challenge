@@ -21,7 +21,7 @@ class StateModelTest(TestCase):
         self.assertEqual(state_default.flood_multiplier, 1.0)
 
     def test_equality(self):
-        duplicate_state = State(id=self.state1.id, state="Duplicate")
+        duplicate_state = State(id=self.state1.id, state="California")
         self.assertEqual(duplicate_state, self.state1)
 
         similar_state = State(state="California")
