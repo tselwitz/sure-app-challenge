@@ -3,10 +3,10 @@ from home.utils.api_crud import API_CRUD
 from home.models.base_coverage import Base_Coverage
 from home.models.additional_costs import Additional_Costs
 from home.models.state import State
-from home.utils.round_price import round_price
+from home.utils.round_price import round_price, floor_price
 from django.http import JsonResponse
 from functools import reduce
-from uuid import uuid4
+from uuid import uuid4, UUID
 
 
 class Quote_View(API_CRUD):
@@ -20,11 +20,6 @@ class Quote_View(API_CRUD):
         mult_costs: list,
         tax_multiplier: float,
     ):
-        mult_costs = [i for i in mult_costs]
-        add_costs = [i for i in add_costs]
-        coverage = coverage
-        tax_multiplier = tax_multiplier
-
         subtotal = (coverage + sum(add_costs)) * reduce(lambda x, y: x * y, mult_costs)
         taxes = subtotal * (tax_multiplier - 1)
         total = subtotal * tax_multiplier
@@ -54,9 +49,9 @@ class Quote_View(API_CRUD):
             coverage.price, add_costs, mult_costs, state.tax_multiplier
         )
         quote, created = Quote.objects.update_or_create(
-            id=body["id"],
+            id=body["id"] if "id" in body.keys() else None,
             defaults={
-                "id": uuid4(),
+                "id": body["id"] if "id" in body.keys() else uuid4(),
                 "name": body["name"],
                 "has_pet": body["has_pet"],
                 "has_flood_coverage": body["has_flood_coverage"],
