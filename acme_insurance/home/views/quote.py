@@ -6,10 +6,12 @@ from home.utils.api_crud import API_CRUD
 from home.models.base_coverage import Base_Coverage
 from home.models.additional_costs import Additional_Costs
 from home.models.state import State
-from home.utils.round_price import round_price, floor_price
+
+from home.utils.round_price import truncate_decimal
 from django.http import JsonResponse, HttpResponseBadRequest
 from functools import reduce
-from uuid import uuid4, UUID
+from uuid import uuid4
+from decimal import Decimal
 
 
 class Quote_View(API_CRUD):
@@ -28,10 +30,19 @@ class Quote_View(API_CRUD):
         mult_costs: list,
         tax_multiplier: float,
     ):
+        coverage = Decimal(str(coverage))
+        tax_multiplier = Decimal(str(tax_multiplier))
+        add_costs = [Decimal(str(i)) for i in add_costs]
+        mult_costs = [Decimal(str(i)) for i in mult_costs]
+
         subtotal = (coverage + sum(add_costs)) * reduce(lambda x, y: x * y, mult_costs)
-        taxes = subtotal * (tax_multiplier - 1)
-        total = subtotal * tax_multiplier
-        return round_price(subtotal), round_price(taxes), round_price(total)
+        taxes = subtotal * tax_multiplier
+        total = subtotal + (subtotal * tax_multiplier)
+        return (
+            float(subtotal),
+            truncate_decimal(float(taxes)),
+            truncate_decimal(float(total)),
+        )
 
     def post(self, request):
         body = request.body_json

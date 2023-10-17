@@ -1,9 +1,5 @@
-from math import floor
+from math import trunc
 
 
-def round_price(x, prec=2, base=0.001):
-    return round(base * round(x / base), prec)
-
-
-def floor_price(x, base=0.01):
-    return floor(x / base) * base
+def truncate_decimal(x, places=2):
+    return trunc(x * (10**places)) / 10**places

@@ -1,4 +1,5 @@
 from uuid import UUID
+from decimal import Decimal
 
 
 class PrettyPrint:
@@ -6,7 +7,7 @@ class PrettyPrint:
         fields_dict = {}
         for field in self._meta.fields:
             attr = getattr(self, field.name)
-            if isinstance(attr, (bool, str, int, float, UUID)):
+            if isinstance(attr, (bool, str, int, float, UUID, Decimal)):
                 fields_dict[field.name] = attr
             else:
                 fields_dict[field.name] = attr.pretty_print()

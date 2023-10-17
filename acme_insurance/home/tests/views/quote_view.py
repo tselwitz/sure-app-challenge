@@ -14,13 +14,13 @@ class QuoteViewTest(TestCase):
         Base_Coverage.objects.create(base_coverage_type="Premium", price=40.0)
         Additional_Costs.objects.create(description="Pet Fee", price=20.0)
         texas = State.objects.create(
-            state="Texas", tax_multiplier=1.005, flood_multiplier=1.5
+            state="Texas", tax_multiplier=0.005, flood_multiplier=1.5
         )
         State.objects.create(
-            state="California", tax_multiplier=1.01, flood_multiplier=1.02
+            state="California", tax_multiplier=0.01, flood_multiplier=1.02
         )
         State.objects.create(
-            state="New York", tax_multiplier=1.02, flood_multiplier=1.1
+            state="New York", tax_multiplier=0.02, flood_multiplier=1.1
         )
         # Set up request factory for mock requests
         self.factory = RequestFactory()

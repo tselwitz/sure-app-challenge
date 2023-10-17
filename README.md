@@ -59,6 +59,7 @@ $ python3 manage.py test
 While typically frowned upon, I have checked in my SQLite Database containing the data described in the problem statement.  This allows for easy testing.
 
 **Note: that all string and id based query parameters in this exercise are case sensitive.**
+
 After starting the application, to submit a quote for rating, use the following request:
 ```
 POST localhost:8000/home/quote/
@@ -66,11 +67,11 @@ POST localhost:8000/home/quote/
 With the following body:
 ```json
 {
-    "name": "Test Case 4",
-    "coverage": "Basic",
-    "state": "Texas",
-    "has_pet": false,
-    "has_flood_coverage": true
+    "name": "Test Case 4", # Can be any string
+    "coverage": "Basic", # "Premium" is also valid
+    "state": "Texas", # "California" and "New York" are valid
+    "has_pet": false, # true or false
+    "has_flood_coverage": true # true or false
 }
 ```
 You will recieve a response with the ID and other relevant query information:
@@ -88,7 +89,7 @@ You will recieve a response with the ID and other relevant query information:
     "coverage_state": {
         "id": "012a4c74-bcdc-4333-9bf2-8cb168f2b3e8",
         "state": "Texas",
-        "tax_multiplier": 1.005,
+        "tax_multiplier": 0.005,
         "flood_multiplier": 1.5
     },
     "subtotal": 30.0,
@@ -99,6 +100,22 @@ You will recieve a response with the ID and other relevant query information:
 To query the quote information:
 ```
 GET localhost:8000/home/quote?id=6c85fcd7-b1a9-4d2a-9c93-533f7f1def95
+```
+```
+GET localhost:8000/home/quote/
+```
+To get a prettified view of the quote, you can use the "rater" method. To query, it requires an id and does not accept other parameters.
+```
+localhost:8000/home/quote/rater?id=5a11a71e-e784-4fd2-ba58-5b51d664a62a
+```
+To recieve:
+```json
+{
+    "id": "5a11a71e-e784-4fd2-ba58-5b51d664a62a",
+    "subtotal": "$60.00",
+    "taxes": "$0.30",
+    "total_price": "$60.30"
+}
 ```
 I support other query parameters as well:
 ```
@@ -139,6 +156,6 @@ Parameters:
 ```
 -> id: uuid
 -> state: string
--> tax_multiplier: float (Usage note: if the tax amount is 2%, input as 1.02)
--> flood_multiplier: float (Usage note: if the flood multiplier is 2%, input as 1.02)
+-> tax_multiplier: float (Usage note: if the tax amount is 2%, input as 0.02)
+-> flood_multiplier: float (Usage note: if the flood multiplier is 2%, input as 0.02)
 ```
