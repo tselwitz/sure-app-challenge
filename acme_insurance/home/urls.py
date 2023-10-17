@@ -25,6 +25,7 @@ urlpatterns = [
         name="base_coverage_delete",
     ),
     path("quote/", Quote_View.as_view(), name="quote_list_create"),
+    path("quote/rater/", Quote_View.as_view(), name="quote_rater"),
     path("quote/delete/", Quote_View.as_view(), name="quote_delete"),
     path("state/", State_View.as_view(), name="state_list_create"),
     path("state/delete/", State_View.as_view(), name="state_delete"),

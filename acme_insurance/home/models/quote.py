@@ -26,3 +26,11 @@ class Quote(PrettyPrint, models.Model):
     subtotal = models.FloatField()
     taxes = models.FloatField()
     total_price = models.FloatField()
+
+    def rater_view(self):
+        return {
+            "id": self.id,
+            "subtotal": f"${self.subtotal:0.2f}",
+            "taxes": f"${self.taxes:0.2f}",
+            "total_price": f"${self.total_price:0.2f}",
+        }
