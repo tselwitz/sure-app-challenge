@@ -7,7 +7,7 @@ from home.utils.pretty_print import PrettyPrint
 class Additional_Costs(PrettyPrint, models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True)
     description = models.CharField(max_length=100)
-    price = models.FloatField(default=0.0)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __hash__(self):
         return hash(self.id)

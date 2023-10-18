@@ -6,7 +6,7 @@ from home.models.additional_costs import Additional_Costs
 from home.models.state import State
 import json
 from decimal import Decimal
-from home.utils.round_price import limit_decimal_places
+from home.utils.rounding import limit_decimal_places
 
 
 class QuoteViewTest(TestCase):

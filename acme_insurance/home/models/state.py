@@ -8,8 +8,8 @@ class State(PrettyPrint, models.Model):
     id = models.UUIDField(default=uuid4, primary_key=True)
     state = models.CharField(max_length=50)
 
-    tax_multiplier = models.FloatField(default=1.0)
-    flood_multiplier = models.FloatField(default=1.0)
+    tax_multiplier = models.DecimalField(max_digits=10, decimal_places=4)
+    flood_multiplier = models.DecimalField(max_digits=10, decimal_places=4)
 
     def __hash__(self):
         return hash(self.id)

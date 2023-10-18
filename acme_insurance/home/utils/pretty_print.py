@@ -1,5 +1,6 @@
 from uuid import UUID
 from decimal import Decimal
+from home.utils.rounding import limit_decimal_places
 
 
 class PrettyPrint:
@@ -7,8 +8,10 @@ class PrettyPrint:
         fields_dict = {}
         for field in self._meta.fields:
             attr = getattr(self, field.name)
-            if isinstance(attr, (bool, str, int, float, UUID, Decimal)):
+            if isinstance(attr, (bool, str, int, float, UUID)):
                 fields_dict[field.name] = attr
+            elif isinstance(attr, Decimal):
+                fields_dict[field.name] = limit_decimal_places(attr, places=3)
             else:
                 fields_dict[field.name] = attr.pretty_print()
         return fields_dict
