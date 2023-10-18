@@ -4,6 +4,9 @@ from home.tests.views.quote_view import QuoteViewTest
 # API CRUD view base class test
 from home.tests.utils.api_crud import ApiCrudTest
 
+# View Helpers tests
+from home.tests.utils.view_helpers import ViewHelpersTest
+
 # models tests
 from home.tests.models.additional_costs import AdditionalCostsModelTest
 from home.tests.models.base_coverage import BaseCoverageModelTest
