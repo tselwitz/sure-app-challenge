@@ -104,7 +104,7 @@ GET localhost:8000/home/quote?id=6c85fcd7-b1a9-4d2a-9c93-533f7f1def95
 ```
 GET localhost:8000/home/quote/
 ```
-To get a prettified view of the quote, you can use the "rater" method. To query, it requires an id and does not accept other parameters.
+To get a prettified view of the quote, you can use the "rater" method.
 ```
 localhost:8000/home/quote/rater?id=5a11a71e-e784-4fd2-ba58-5b51d664a62a
 ```

@@ -1,5 +1,4 @@
-from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
-from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 from uuid import UUID
 
@@ -13,15 +12,15 @@ class API_CRUD(View):
         try:
             params = {i: request.GET.get(f"{i}", "") for i in request.GET}
         except AttributeError:
-            return HttpResponseBadRequest("Invalid query params")
-        obj = self.baseClass.objects.filter(**params).values()
-        return JsonResponse(list(obj), safe=False)
+            return JsonResponse({"error": "Invalid query params"}, status=400)
+        obj = self.baseClass.objects.filter(**params).all()
+        return JsonResponse([o.pretty_print() for o in obj], safe=False)
 
     def post(self, request):
         try:
             params = {i: request.body_json[i] for i in request.body_json}
         except AttributeError:
-            return HttpResponseBadRequest("Invalid JSON request body")
+            return JsonResponse({"error": "Invalid JSON request body"}, status=400)
 
         obj, created = self.baseClass.objects.update_or_create(
             id=params["id"], defaults=params
@@ -30,16 +29,16 @@ class API_CRUD(View):
         try:
             return JsonResponse(obj.pretty_print(), safe=False)
         except AttributeError:
-            return HttpResponseBadRequest(
-                "Object does not have a pretty_print() method"
+            return JsonResponse(
+                {"error": "Object does not have a pretty_print() method"}, status=400
             )
 
     def delete(self, request):
         try:
             obj_id = UUID(request.body_json["id"])
         except (AttributeError, KeyError):
-            return HttpResponseBadRequest("Invalid JSON request body")
+            return JsonResponse({"error": "Invalid JSON request body"}, status=400)
         except TypeError:
-            return HttpResponseBadRequest("Invalid UUID format")
+            return JsonResponse({"error": "Invalid UUID format"}, status=400)
         self.baseClass.objects.filter(id=obj_id).delete()
         return HttpResponse(f"Deleted {obj_id}")
