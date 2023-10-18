@@ -5,6 +5,8 @@ from home.models.base_coverage import Base_Coverage
 from home.models.additional_costs import Additional_Costs
 from home.models.state import State
 import json
+from decimal import Decimal
+from home.utils.round_price import limit_decimal_places
 
 
 class QuoteViewTest(TestCase):
@@ -30,10 +32,10 @@ class QuoteViewTest(TestCase):
         self.post_quote_test("Premium", "California", True, True, 61.20, 0.61, 61.81)
 
     def test_case_3(self):
-        self.post_quote_test("Premium", "New York", True, False, 60, 1.20, 61.20)
+        self.post_quote_test("Premium", "New York", True, False, 60.0, 1.20, 61.20)
 
     def test_case_4(self):
-        self.post_quote_test("Basic", "Texas", False, True, 30, 0.15, 30.15)
+        self.post_quote_test("Basic", "Texas", False, True, 30.0, 0.15, 30.15)
 
     def post_quote_test(
         self, coverage, state, pet, flood, subtotal, taxes, total_price
@@ -56,6 +58,14 @@ class QuoteViewTest(TestCase):
         # Assert that the Quote was created properly
         self.assertEqual(response.status_code, 200)
         response_data = json.loads(response.content)
-        self.assertEqual(response_data["subtotal"], subtotal)
-        self.assertEqual(response_data["taxes"], taxes)
-        self.assertEqual(response_data["total_price"], total_price)
+        self.assertEqual(
+            Decimal(response_data["subtotal"]),
+            limit_decimal_places(Decimal(str(subtotal))),
+        )
+        self.assertEqual(
+            Decimal(response_data["taxes"]), limit_decimal_places(Decimal(str(taxes)))
+        )
+        self.assertEqual(
+            Decimal(response_data["total_price"]),
+            limit_decimal_places(Decimal(str(total_price))),
+        )

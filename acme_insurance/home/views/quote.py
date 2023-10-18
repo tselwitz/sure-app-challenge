@@ -7,7 +7,7 @@ from home.models.base_coverage import Base_Coverage
 from home.models.additional_costs import Additional_Costs
 from home.models.state import State
 
-from home.utils.round_price import truncate_decimal
+from home.utils.round_price import limit_decimal_places
 from django.http import JsonResponse, HttpResponseBadRequest
 from functools import reduce
 from uuid import uuid4
@@ -25,10 +25,10 @@ class Quote_View(API_CRUD):
 
     def calculate_price(
         self,
-        coverage: float,
-        add_costs: list,
-        mult_costs: list,
-        tax_multiplier: float,
+        coverage,
+        add_costs,
+        mult_costs,
+        tax_multiplier,
     ):
         coverage = Decimal(str(coverage))
         tax_multiplier = Decimal(str(tax_multiplier))
@@ -37,11 +37,11 @@ class Quote_View(API_CRUD):
 
         subtotal = (coverage + sum(add_costs)) * reduce(lambda x, y: x * y, mult_costs)
         taxes = subtotal * tax_multiplier
-        total = subtotal + (subtotal * tax_multiplier)
+        total = subtotal + taxes
         return (
-            float(subtotal),
-            truncate_decimal(float(taxes)),
-            truncate_decimal(float(total)),
+            limit_decimal_places(subtotal),
+            limit_decimal_places(taxes),
+            limit_decimal_places(total),
         )
 
     def post(self, request):

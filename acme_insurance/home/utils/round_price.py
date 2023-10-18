@@ -1,5 +1,6 @@
-from math import trunc
+from decimal import Decimal, ROUND_DOWN
 
 
-def truncate_decimal(x, places=2):
-    return trunc(x * (10**places)) / 10**places
+def limit_decimal_places(value, places=2):
+    """Limit the number of decimal places of a Decimal."""
+    return value.quantize(Decimal("0." + "0" * places), rounding=ROUND_DOWN)

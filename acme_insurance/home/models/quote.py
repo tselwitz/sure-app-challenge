@@ -7,7 +7,7 @@ from home.utils.pretty_print import PrettyPrint
 
 
 class Quote(PrettyPrint, models.Model):
-    id = models.UUIDField(default=uuid4(), primary_key=True)
+    id = models.UUIDField(default=uuid4, primary_key=True)
 
     name = models.CharField(max_length=100)
     has_pet = models.BooleanField(default=False)
@@ -23,14 +23,14 @@ class Quote(PrettyPrint, models.Model):
     additional_costs = models.ManyToManyField(Additional_Costs)
 
     # Calculated Fields
-    subtotal = models.FloatField()
-    taxes = models.FloatField()
-    total_price = models.FloatField()
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+    taxes = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def rater_view(self):
         return {
             "id": self.id,
-            "subtotal": f"${self.subtotal:0.2f}",
-            "taxes": f"${self.taxes:0.2f}",
-            "total_price": f"${self.total_price:0.2f}",
+            "subtotal": f"${self.subtotal}",
+            "taxes": f"${self.taxes}",
+            "total_price": f"${self.total_price}",
         }
