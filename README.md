@@ -46,8 +46,16 @@ $ cd acme_insurance
 $ python3 manage.py runserver
 ```
 
+### Teardown
+
+To exit the python virtual environment:
+```
+$ deactivate
+```
+
 ## Testing
 
+Note: all of these steps require the python virtual environment to be activated.
 ### To run the automated test suite:
 ```
 $ cd sure-app-challenge/acme-insurance
